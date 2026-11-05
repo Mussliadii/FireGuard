@@ -19,7 +19,7 @@ backend/.env
 *.joblib
 backend/models/*.pt
 backend/models/*.onnx
-data/raw/
+backend/data/raw/
 backend/runs/
 backend/ml/detect/.fasdd_cv.resolved.yaml
 
@@ -32,3 +32,6 @@ backend/ml/detect/.fasdd_cv.resolved.yaml
 
 # OS
 .DS_Store
+
+# Local tooling state (not part of the project)
+.claude/
