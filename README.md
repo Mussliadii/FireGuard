@@ -99,7 +99,6 @@ distinction matters.
 ## Tech Stack
 - **Frontend**: Next.js, React, Leaflet — deployed on Vercel
 - **Backend inference**: FastAPI, YOLO26 (Ultralytics), scikit-learn/XGBoost
-  — deployed on HuggingFace Spaces / Render
 - **Database**: Supabase (Postgres)
 - **Notifications**: Web Push (VAPID)
 - **Data sources**: NASA FIRMS API, Open-Meteo API
