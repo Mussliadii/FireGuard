@@ -1,0 +1,7 @@
+# Safety net in case Vercel's Root Directory isn't set to `frontend/` —
+# the Python backend (and its ~3.6GB dataset) must never be bundled into
+# a Vercel serverless function. The correct fix is Project Settings →
+# General → Root Directory = frontend, but this file guards against the
+# 500MB Lambda size limit being blown even if that's misconfigured.
+backend/
+docs/
