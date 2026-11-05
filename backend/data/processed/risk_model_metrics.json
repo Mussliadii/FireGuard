@@ -1,0 +1,56 @@
+{
+  "raw": {
+    "feature_set": "raw",
+    "features": [
+      "Temperature",
+      "RH",
+      "Rain",
+      "Ws"
+    ],
+    "cv_f1_by_model": {
+      "logistic_regression": 0.8249,
+      "random_forest": 0.8621,
+      "xgboost": 0.8633
+    },
+    "best_model": "xgboost",
+    "best_cv_f1": 0.8633,
+    "test_metrics": {
+      "accuracy": 0.9592,
+      "precision": 1.0,
+      "recall": 0.9286,
+      "f1": 0.963,
+      "roc_auc": 0.9983
+    },
+    "confusion_matrix_path": "/home/musliadi/Downloads/Data Science/Neural Storm/backend/data/processed/confusion_matrix_raw.png"
+  },
+  "full": {
+    "feature_set": "full",
+    "features": [
+      "Temperature",
+      "RH",
+      "Ws",
+      "Rain",
+      "FFMC",
+      "DMC",
+      "DC",
+      "ISI",
+      "BUI",
+      "FWI"
+    ],
+    "cv_f1_by_model": {
+      "logistic_regression": 0.9588,
+      "random_forest": 0.9818,
+      "xgboost": 0.9865
+    },
+    "best_model": "xgboost",
+    "best_cv_f1": 0.9865,
+    "test_metrics": {
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "roc_auc": 1.0
+    },
+    "confusion_matrix_path": "/home/musliadi/Downloads/Data Science/Neural Storm/backend/data/processed/confusion_matrix_full.png"
+  }
+}

@@ -1,0 +1,25 @@
+# YOLO dataset config for FASDD_CV (Roboflow export of the FASDD benchmark).
+# https://huggingface.co/datasets/seawsurf/fire_smoke_dataset_fasdd_cv
+#
+# Downloaded + extracted by scripts/download_detection_dataset.py into:
+#   backend/data/raw/fasdd_cv/
+#     train/images/*.jpg  train/labels/*.txt
+#     valid/images/*.jpg  valid/labels/*.txt
+#     test/images/*.jpg   test/labels/*.txt
+#
+# Class index convention matches the dataset's own data.yaml exactly — do
+# not reorder these, label files already encode class 0/1 against this.
+#
+# This file is documentation only — train.py/evaluate.py don't load it
+# directly. See ml/detect/dataset.py for why (relative `path:` resolution
+# quirk in ultralytics) and what actually gets passed to YOLO instead.
+
+path: ../../data/raw/fasdd_cv
+train: train/images
+val: valid/images
+test: test/images
+
+nc: 2
+names:
+  0: fire
+  1: smoke
