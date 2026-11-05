@@ -248,13 +248,11 @@ option for further fine-tuning with Indonesian data in the future.
 ## Screenshot / Demo
 ![FireGuard AI dashboard](./docs/screenshot.png)
 
-> TODO: add a short demo GIF/video walking through all 4 modules.
 
 ## Deployment
 - Frontend: Vercel
 - Backend: HuggingFace Spaces / Render
 
-> TODO: fill in the live deployment link once deployed.
 
 ## AI Tools Disclosure
 - This project was built with the help of **Claude Code** for project
