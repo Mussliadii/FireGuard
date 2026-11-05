@@ -14,6 +14,7 @@ a dangerous area.
 
 ## Table of Contents
 - [Problem & Solution](#problem--solution)
+- [Architecture](#architecture)
 - [Tech Stack](#tech-stack)
 - [Repo Structure](#repo-structure)
 - [Setup & Installation](#setup--installation)
@@ -43,6 +44,58 @@ single-location check; the actual prevention value comes from the
 background cron job (`frontend/app/api/cron/check-alerts/`) that runs both
 signals automatically on a schedule. See [`ide.md`](./ide.md) for the full
 architecture & planning notes.
+
+## Architecture
+
+```mermaid
+flowchart TB
+    subgraph Browser["User's Browser"]
+        UI["Dashboard UI\n(map, detect/risk forms, alert signup)"]
+        SW["Service Worker\n(receives Web Push)"]
+    end
+
+    subgraph Vercel["Frontend — Vercel (Next.js)"]
+        API["API routes\n/api/detect, /api/predict-risk,\n/api/hotspots, /api/register"]
+        Cron["Vercel Cron\n/api/cron/check-alerts"]
+    end
+
+    subgraph Backend["Inference backend — HF Spaces / Render (FastAPI)"]
+        DetectAPI["POST /detect\nYOLO26n (fire/smoke)"]
+        RiskAPI["POST /predict-risk\nXGBoost (risk score)"]
+    end
+
+    subgraph External["External data sources"]
+        FIRMS["NASA FIRMS API\n(active hotspots)"]
+        Meteo["Open-Meteo API\n(live weather)"]
+    end
+
+    DB[("Supabase\nusers, location, push subscription")]
+
+    UI -->|upload image| API --> DetectAPI
+    UI -->|lat/lon + weather| API --> RiskAPI
+    UI -->|location + push subscription| API --> DB
+    API -->|hotspot query| FIRMS
+    UI --> Meteo
+
+    Cron -->|1. pull active hotspots| FIRMS
+    Cron -->|2. sweep fire-prone regions| RiskAPI
+    Cron -->|3. match radius| DB
+    Cron -->|4. send alert| SW
+
+    style Browser fill:#121a15,stroke:#2f4330,color:#e8efe9
+    style Vercel fill:#121a15,stroke:#2f4330,color:#e8efe9
+    style Backend fill:#121a15,stroke:#2f4330,color:#e8efe9
+    style External fill:#121a15,stroke:#2f4330,color:#e8efe9
+```
+
+The frontend never talks to the inference backend or Supabase directly from
+the browser — everything routes through Next.js API routes, so secrets
+(`BACKEND_INFERENCE_URL`, Supabase service key, VAPID private key) stay
+server-side. The cron job is the automated prevention loop: it is what
+turns "the user can check one point manually" into "the system watches
+fire-prone regions on its own and pushes a warning before anyone has to
+ask" — see [Problem & Solution](#problem--solution) for why that
+distinction matters.
 
 ## Tech Stack
 - **Frontend**: Next.js, React, Leaflet — deployed on Vercel
