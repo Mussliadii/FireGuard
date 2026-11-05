@@ -42,8 +42,7 @@ often too late. FireGuard AI combines four capabilities into one dashboard:
 The on-screen risk prediction and detection forms are for an on-demand,
 single-location check; the actual prevention value comes from the
 background cron job (`frontend/app/api/cron/check-alerts/`) that runs both
-signals automatically on a schedule. See [`ide.md`](./ide.md) for the full
-architecture & planning notes.
+signals automatically on a schedule.
 
 ## Architecture
 
@@ -107,11 +106,33 @@ distinction matters.
 
 ## Repo Structure
 ```
-frontend/   Next.js app (dashboard, API routes, cron alert)
-backend/    FastAPI app (detection & risk prediction models)
-Info.md     Official Neural Storm 2026 competition brief
-ide.md      Project idea & planning notes
-LICENSE     MIT license
+frontend/                  Next.js app
+  app/
+    api/                    API routes (server-side proxies, cron job)
+      cron/check-alerts/    Scheduled danger-point sweep + Web Push
+      detect/               Proxies to backend POST /detect
+      hotspots/             Proxies to NASA FIRMS (sample fallback)
+      predict-risk/         Proxies to backend POST /predict-risk
+      register/             Saves user location + push subscription
+    layout.tsx, page.tsx, globals.css, icon.svg
+  components/               Header, Footer, Map, DetectForm, RiskForm, AlertSignup
+  lib/                      Shared helpers (weather, push, geo, FIRMS, Supabase)
+  public/                   Static assets + sw.js (push service worker)
+
+backend/                   FastAPI app
+  routers/                  API endpoints (/detect, /predict-risk)
+  ml/
+    detect/                 YOLO detection pipeline (train, evaluate, dataset config)
+    risk/                   Risk model pipeline (preprocess, train) + methodology
+  scripts/                  Dataset download scripts, dev env setup
+  tests/                    Unit & integration tests
+  models/                   Trained model weights (gitignored — see Model Performance)
+  data/
+    raw/                    Downloaded datasets (gitignored, ~3.6GB)
+    processed/              Training artifacts: metrics, confusion matrices (tracked)
+
+docs/                       Screenshot(s) used in this README
+LICENSE                     MIT license
 ```
 
 ## Setup & Installation
